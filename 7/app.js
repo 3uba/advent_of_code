@@ -3,7 +3,8 @@ const fs = require('fs')
 let dirMap = ['/']
 let currentDir = '/'
 let cat = {'/': {}}
-let finalValue = 0
+let finalValue = 0,
+    lowesDir =  70000000
 
 function addDirectory (obj, map) {
     if (map.length === 0) return;
@@ -30,7 +31,16 @@ function calculateSize(obj) {
     if (totalSize < 100000) finalValue+=totalSize
     return totalSize;
 }
-
+function findDir(obj, needSpace) {
+    for (const [key,value] of Object.entries(obj)) {
+        if (typeof value === 'object') {
+            if (value._size > needSpace && value._size < lowesDir) {
+                lowesDir = value._size
+            }
+            findDir(value, needSpace)
+        }
+    }
+}
 function main () {
     fs.readFileSync('data.txt', 'utf-8')
         .split(/\n/)
@@ -66,8 +76,10 @@ function main () {
             }
         })
     calculateSize(cat)
-    // console.log(cat)
     console.log(`Part 1: ${finalValue}`)
-}
+    findDir(cat, -40000000 + cat._size)
+    console.log(`Part 2: ${lowesDir}`)
 
+    // console.log(cat)
+}
 main()
