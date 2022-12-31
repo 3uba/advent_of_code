@@ -17,7 +17,6 @@ function addFile (obj, map, size, file) {
     if (map.length === 1) obj[head] = {...obj[head], [file]: size}
     addFile(obj[head], tail, size, file)
 }
-
 function calculateSize(obj) {
     let totalSize = 0;
     for (const [key, value] of Object.entries(obj)) {
@@ -67,8 +66,8 @@ function main () {
             }
         })
     calculateSize(cat)
-    console.log(cat)
-    console.log(finalValue)
+    // console.log(cat)
+    console.log(`Part 1: ${finalValue}`)
 }
 
 main()
